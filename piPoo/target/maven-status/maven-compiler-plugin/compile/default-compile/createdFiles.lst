@@ -1,6 +1,11 @@
+telas\telaLancamento$5.class
+com\mycompany\pipoo\ConnectionFactory.class
 telas\telaLogin1$1.class
+telas\telaGrafico$3.class
 telas\telaLogin1$2.class
 com\mycompany\pipoo\PiPoo.class
+model\Gastos.class
+telas\telaLancamento$4.class
 telas\telaLancamento.class
 telas\telaMenu1$1.class
 telas\telaLogin1.class
@@ -11,6 +16,7 @@ telas\telaGrafico$2.class
 telas\telaMenu1$2.class
 telas\telaLancamento$3.class
 telas\telaLancamento$1.class
+controllers\GastosDAO.class
 telas\telaGrafico.class
 telas\telaLancamento$2.class
 telas\telaMenu1.class

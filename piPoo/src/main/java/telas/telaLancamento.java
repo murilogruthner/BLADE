@@ -4,7 +4,11 @@
  */
 package telas;
 
+import controllers.GastosDAO;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import javax.swing.JOptionPane;
+import model.Gastos;
 
 /**
  *
@@ -35,7 +39,6 @@ public class telaLancamento extends javax.swing.JFrame {
         lbl_valor = new javax.swing.JLabel();
         lbl_categoria = new javax.swing.JLabel();
         txt_descricao = new javax.swing.JTextField();
-        txt_data = new javax.swing.JTextField();
         txt_valor = new javax.swing.JTextField();
         cbx_categoria = new javax.swing.JComboBox<>();
         botao_sair = new javax.swing.JButton();
@@ -43,6 +46,7 @@ public class telaLancamento extends javax.swing.JFrame {
         botao_voltar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         lbl_userID = new javax.swing.JLabel();
+        txt_data = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -54,7 +58,12 @@ public class telaLancamento extends javax.swing.JFrame {
 
         lbl_categoria.setText("Categoria");
 
-        cbx_categoria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Carro", "Luz", "Água", "Internet/Telefone", "Saúde", "Mercado", "Lazer", "Misc", "Salário" }));
+        cbx_categoria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione", "Carro", "Casa", "Internet/Telefone", "Saúde", "Mercado", "Lazer", "Misc" }));
+        cbx_categoria.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbx_categoriaActionPerformed(evt);
+            }
+        });
 
         botao_sair.setText("Sair");
         botao_sair.addActionListener(new java.awt.event.ActionListener() {
@@ -81,6 +90,13 @@ public class telaLancamento extends javax.swing.JFrame {
 
         lbl_userID.setText("Admin");
 
+        txt_data.setName("txt_data"); // NOI18N
+        txt_data.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_dataActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -104,11 +120,11 @@ public class telaLancamento extends javax.swing.JFrame {
                     .addComponent(lbl_categoria, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(79, 79, 79)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(cbx_categoria, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(cbx_categoria, 0, 129, Short.MAX_VALUE)
                     .addComponent(txt_valor)
-                    .addComponent(txt_data)
-                    .addComponent(txt_descricao))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 65, Short.MAX_VALUE)
+                    .addComponent(txt_descricao)
+                    .addComponent(txt_data))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 63, Short.MAX_VALUE)
                 .addComponent(lbl_userID)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel1))
@@ -125,21 +141,22 @@ public class telaLancamento extends javax.swing.JFrame {
                                     .addComponent(lbl_descrição)
                                     .addComponent(txt_descricao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(lbl_data)
-                                    .addComponent(txt_data, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(lbl_data)
                                 .addGap(18, 18, 18)
                                 .addComponent(lbl_valor))
-                            .addComponent(txt_valor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(txt_data, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(txt_valor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lbl_categoria)
+                            .addComponent(cbx_categoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addComponent(botao_lancar))
                     .addComponent(jLabel1)
                     .addComponent(lbl_userID))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lbl_categoria)
-                    .addComponent(cbx_categoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(botao_lancar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(botao_sair)
                     .addComponent(botao_voltar))
@@ -157,19 +174,76 @@ public class telaLancamento extends javax.swing.JFrame {
 
     private void botao_voltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botao_voltarActionPerformed
         new telaMenu1().setVisible(true);
-                this.setVisible(false);        // TODO add your handling code here:
+        this.setVisible(false); 
     }//GEN-LAST:event_botao_voltarActionPerformed
 
     private void botao_lancarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botao_lancarActionPerformed
-        txt_data.setText("");
-        txt_descricao.setText("");
-        txt_valor.setText("");    
-        JOptionPane.showMessageDialog(
-        this, 
-        "Lançamento concluído!", 
-        "Sucesso!", 
-        JOptionPane.INFORMATION_MESSAGE);     // TODO add your handling code here:
+        try {
+            String descricao = txt_descricao.getText().trim();
+            String textoValor = txt_valor.getText().trim();
+            String textoData = txt_data.getText().trim();
+            String categoria = cbx_categoria.getSelectedItem().toString();
+
+            if (descricao.isEmpty() || textoValor.isEmpty() || textoData.isEmpty() || categoria.equals("Selecione")) {
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Todos os campos são obrigatórios!",
+                        "Erro ao registrar",
+                        JOptionPane.ERROR_MESSAGE
+                );
+                return;
+            }
+
+            double valor;
+            try {
+                valor = Double.parseDouble(textoValor.replace(",", "."));
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Valor inválido! Digite um número válido.\nExemplo: 100.50",
+                        "Erro no valor",
+                        JOptionPane.ERROR_MESSAGE
+                );
+                return;
+            }
+
+            LocalDate data;
+            try {
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                data = LocalDate.parse(textoData, formatter);
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Data inválida! Utilize o formato dd/MM/yyyy.\nExemplo: 25/11/2025",
+                        "Erro na data",
+                        JOptionPane.ERROR_MESSAGE
+                );
+                return;
+            }
+            
+            Gastos g = new Gastos(descricao, valor, data, categoria);
+            new GastosDAO().inserir(g);
+
+            JOptionPane.showMessageDialog(this, "Lançamento salvo com sucesso!");
+
+            txt_descricao.setText("");
+            txt_valor.setText("");
+            txt_data.setText("");
+            cbx_categoria.setSelectedIndex(0);
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Erro inesperado.\n" + e.getMessage());
+        }
+
     }//GEN-LAST:event_botao_lancarActionPerformed
+
+    private void txt_dataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_dataActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_dataActionPerformed
+
+    private void cbx_categoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbx_categoriaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbx_categoriaActionPerformed
 
     /**
      * @param args the command line arguments

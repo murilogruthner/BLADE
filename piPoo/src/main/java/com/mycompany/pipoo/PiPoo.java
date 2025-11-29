@@ -5,7 +5,10 @@
 package com.mycompany.pipoo;
 
 import telas.telaLogin1;
-
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import model.Gastos;
 
 
 
@@ -15,11 +18,21 @@ import telas.telaLogin1;
  */
 public class PiPoo {
      public static void main(String[] args) {
-     java.awt.EventQueue.invokeLater(new Runnable() {
+        System.out.println("Iniciando o sistema...");
+
+        try (Connection conn = ConnectionFactory.getConnection()) {
+            if (conn != null) {
+                System.out.println("Conexao com SQLite funcionando!");
+            }
+        } catch (SQLException e) {
+            System.out.println("Erro ao conectar: " + e.getMessage());
+        }
+        new Gastos().createTable();
+
+        java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new telaLogin1().setVisible(true); 
+                new telaLogin1().setVisible(true);
             }
         });
-      
     }
 }

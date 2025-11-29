@@ -131,7 +131,7 @@ public class telaMenu1 extends javax.swing.JFrame {
 
     private void botao_menuGraficoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botao_menuGraficoActionPerformed
         new telaGrafico().setVisible(true);
-                this.setVisible(false);        // TODO add your handling code here:
+        this.setVisible(false);        // TODO add your handling code here:
     }//GEN-LAST:event_botao_menuGraficoActionPerformed
 
     /**

@@ -4,6 +4,16 @@
  */
 package telas;
 
+import controllers.GastosDAO;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.util.Map;
+import javax.swing.JOptionPane;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.data.general.DefaultPieDataset;
+
 /**
  *
  * @author muril
@@ -11,12 +21,40 @@ package telas;
 public class telaGrafico extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(telaGrafico.class.getName());
+    
+    private void gerarGraficoPizza() {
+        GastosDAO dao = new GastosDAO();
+        Map<String, Double> dados = dao.getGastosPorCategoria();
+
+        DefaultPieDataset dataset = new DefaultPieDataset();
+        dados.forEach(dataset::setValue);
+
+        JFreeChart graficoPizza = ChartFactory.createPieChart(
+                "Distribuição de Gastos",
+                dataset,
+                true, true, false
+        );
+
+        ChartPanel painel = new ChartPanel(graficoPizza);
+        painel.setPreferredSize(new Dimension(pnl_grafico.getWidth(), pnl_grafico.getHeight()));
+
+        // importante: definir layout que suporta o gráfico
+        pnl_grafico.setLayout(new BorderLayout());
+
+        // limpa e adiciona o gráfico
+        pnl_grafico.removeAll();
+        pnl_grafico.add(painel, BorderLayout.CENTER);
+        pnl_grafico.revalidate();
+        pnl_grafico.repaint();
+    }
+
 
     /**
      * Creates new form telaGrafico
      */
     public telaGrafico() {
         initComponents();
+         gerarGraficoPizza();
     }
 
     /**
@@ -32,7 +70,8 @@ public class telaGrafico extends javax.swing.JFrame {
         botao_voltar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         lbl_userID = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
+        pnl_grafico = new java.awt.Panel();
+        btn_report = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -54,7 +93,24 @@ public class telaGrafico extends javax.swing.JFrame {
 
         lbl_userID.setText("Admin");
 
-        jLabel3.setIcon(new javax.swing.ImageIcon("C:\\Users\\muril\\OneDrive\\Documentos\\NetBeansProjects\\piPoo\\src\\main\\java\\imagens\\grafico.png")); // NOI18N
+        javax.swing.GroupLayout pnl_graficoLayout = new javax.swing.GroupLayout(pnl_grafico);
+        pnl_grafico.setLayout(pnl_graficoLayout);
+        pnl_graficoLayout.setHorizontalGroup(
+            pnl_graficoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        pnl_graficoLayout.setVerticalGroup(
+            pnl_graficoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 286, Short.MAX_VALUE)
+        );
+
+        btn_report.setText("Gerar relatório");
+        btn_report.setName("btn_report"); // NOI18N
+        btn_report.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_reportActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -67,14 +123,15 @@ public class telaGrafico extends javax.swing.JFrame {
                 .addComponent(jLabel1))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(botao_voltar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 406, Short.MAX_VALUE)
-                .addComponent(botao_sair)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(botao_voltar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 136, Short.MAX_VALUE)
+                        .addComponent(btn_report)
+                        .addGap(157, 157, 157)
+                        .addComponent(botao_sair))
+                    .addComponent(pnl_grafico, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addGap(100, 100, 100)
-                .addComponent(jLabel3)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -82,12 +139,13 @@ public class telaGrafico extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1)
                     .addComponent(lbl_userID))
-                .addGap(11, 11, 11)
-                .addComponent(jLabel3)
-                .addGap(31, 31, 31)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(pnl_grafico, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(16, 16, 16)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(botao_sair)
-                    .addComponent(botao_voltar))
+                    .addComponent(botao_voltar)
+                    .addComponent(btn_report))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -96,7 +154,7 @@ public class telaGrafico extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void botao_sairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botao_sairActionPerformed
-                 new telaLogin1().setVisible(true);
+                new telaLogin1().setVisible(true);
                 this.setVisible(false);      // TODO add your handling code here:
     }//GEN-LAST:event_botao_sairActionPerformed
 
@@ -104,6 +162,11 @@ public class telaGrafico extends javax.swing.JFrame {
         new telaMenu1().setVisible(true);
                 this.setVisible(false);        // TODO add your handling code here:
     }//GEN-LAST:event_botao_voltarActionPerformed
+
+    private void btn_reportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_reportActionPerformed
+        new GastosDAO().gerarHTML();
+        JOptionPane.showMessageDialog(this, "Arquivo gerado com sucesso! Verifique a pasta do projeto");
+    }//GEN-LAST:event_btn_reportActionPerformed
 
     /**
      * @param args the command line arguments
@@ -133,8 +196,9 @@ public class telaGrafico extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botao_sair;
     private javax.swing.JButton botao_voltar;
+    private javax.swing.JButton btn_report;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel lbl_userID;
+    private java.awt.Panel pnl_grafico;
     // End of variables declaration//GEN-END:variables
 }

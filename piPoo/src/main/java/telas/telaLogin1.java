@@ -111,11 +111,10 @@ public class telaLogin1 extends javax.swing.JFrame {
     }//GEN-LAST:event_txt_userActionPerformed
 
     private void botao_loginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botao_loginActionPerformed
-String user = "fatecfatec";
+        String user = "fatec";
+        String pass = "fatec";
 
-        String comparacao = txt_user.getText()+txt_password.getText();
-
-        if(comparacao.equals(user)){
+        if(txt_user.getText().equals(user) && txt_password.getText().equals(pass)){
             System.out.println("Everything worked out :)");
                 new telaMenu1().setVisible(true);
                 this.setVisible(false);
@@ -127,7 +126,9 @@ String user = "fatecfatec";
         "Erro de Login", 
         JOptionPane.ERROR_MESSAGE);
             System.out.println("something's wrong I can feel it");
-        }        
+        }     
+        txt_user.setText("");
+        txt_password.setText("");
     }//GEN-LAST:event_botao_loginActionPerformed
 
     /**
